@@ -1,8 +1,9 @@
 import React from 'react'
-import { Grid, Typography,Pagination } from '@mui/material'
+import { Grid, Typography, Pagination } from '@mui/material'
 import PropTypes from 'prop-types'
 import SongCard from './SongCard.js'
 import API from './API.js'
+import './Result.css'
 
 export default class Result extends React.Component {
   constructor(props) {
@@ -10,55 +11,45 @@ export default class Result extends React.Component {
     this.state = {
       data: [],
       songId: null,
-      offset: 0,
-      perPage: 10,
       errorSongInfoMsg: '',
-      songInfo: {}
+      songInfo: {},
+      offset: 1,
+      perPage: 10,
+      count: 0
     }
   }
-
   componentDidMount() {
-    this.setState({ data: this.props.data})
+    this.setState({ data: this.props.data })
+    let count = Math.ceil(this.props.data.length / this.state.perPage)
+    console.log(count, "count")
+    this.setState({ count: count })
   }
-
   handleClick = (offset) => {
-    this.setState({ offset })
+    console.log(offset, 'offset')
+    this.setState({ offset: offset })
   }
-
   render() {
-    const { data, offset, perPage} = this.state
+    const count = this.state.count
+    const { data, offset, perPage } = this.state
     const { queryTime } = this.props
     const time = (Math.round(queryTime * 100) / 100).toFixed(3)
-
-    return(
-      <div>
-        <Grid container className="result" spacing={6}>
+    return (
+      <div className="result-container">
+        <Grid container spacing={6}>
           <Grid item xs={8}>
             <Typography variant="body1" className="query-results">{`Query results: ${data.length} songs (${time} seconds)`}</Typography>
-
             {data.length > perPage &&
               <Pagination
                 limit={perPage}
                 offset={offset}
-                total={data.length}
-                currentPageColor="primary"
-                onClick={(e, offset) => this.handleClick(offset)}
+                count={count}
+                color="primary"
+                onChange={(e, offset) => this.handleClick(offset)}
               />
             }
-
-            {data.slice(offset, offset + perPage).map((song, idx) =>
-              <SongCard  key={idx} {...song} />
+            {data.slice((offset - 1) * perPage, offset * perPage).map((song, idx) =>
+              <SongCard key={idx} {...song} />
             )}
-
-            {data.length > perPage &&
-              <Pagination
-                limit={perPage}
-                offset={offset}
-                total={data.length}
-                currentPageColor="primary"
-                onClick={(e, offset) => this.handleClick(offset)}
-              />
-            }
           </Grid>
         </Grid>
       </div>
