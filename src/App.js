@@ -1,23 +1,39 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Skeleton, Link, createTheme, ThemeProvider } from '@mui/material'
+import { Box, IconButton, Container, Skeleton, Link, createTheme, ThemeProvider, Typography, AppBar, Toolbar, CssBaseline, Button } from '@mui/material'
+//import LyricsIcon from '@mui/icons-material/Lyrics';
+import aaa from './static/images/logo.jpg'
+//import Background from './static/images/background.jpg'
 import Result from './components/Result.js'
-// import SearchInput from './components/SearchInput.js'
-// import Search from './components/Search.js'
-import SearchTest from './components/SearchTest.js'
+import SearchInput from './components/SearchInput.js'
 import API from './components/API.js'
+import './App.css'
+
+// var sectionStyle = {
+//   width: "100%",
+//   height: "200px",
+//   //width:'1500px',
+//   backgroundImage: `url(${Background})` 
+// };
+
+// const bg = {
+//   height: '100%',
+//   //color: 'red',
+//   //background: url("../../source/1.jpg"),
+//   background: require("./static/images/background.jpg"),
+// };
 
 const theme = createTheme({
       palette: {
         primary: {
-          main: '#2196f3',
+          //main: '#2196f3',
+          //main:'#F3F3F3'
+          main: '#242424'
         },
         secondary: {
-          light: '#cc33ff',
-          main: '#e699ff',
-          contrastText: '#ffcc00',
+          main: '#ffffff',
         },
-        button:{
-          fontStyle: 'italic',
+        box:{
+          main: '#2196f3',
         }
       },
     })
@@ -27,7 +43,8 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      songs: [{songName:'a',singer:'a1',lyrics:'a2'}],
+      songs: [{songName:'True Love',singer:'a1',lyrics:"Rich man, poor man, beggar or king,\n You just can't have everything.\nSo thank your stars above\nFor a song in your heart."},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'}],
+      //songs:[],
       showCards: true,
       showErrorMsg: false,
       loading: false,
@@ -42,7 +59,7 @@ export default class App extends Component {
             try {
               const response = await API.post(
                   keySearchEnabled ? '/key_search':'/lyrics_search',
-                { query }
+                { query } 
               )
               this.setState({
                 songs: response.data.songs,
@@ -65,19 +82,24 @@ export default class App extends Component {
 
     return (
       <div>
-        <ThemeProvider theme={theme}>
-          <Container className="app">
-            <h3>
-              <Link color="primary" underline="none" variant="inherit" onClick={() => window.location.reload()}>
-                Lyrics Search Engine
-              </Link>
-            </h3>
-            <div className="search-container">
-              {/* <SearchInput
+       <ThemeProvider theme={theme}>
+        <CssBaseline/>
+          <AppBar position='relative'>
+          <Toolbar>
+            <Typography variant='h4' onClick={() => window.location.reload()}>
+              Lyrics Search
+            </Typography>
+
+          </Toolbar>
+          </AppBar>
+     
+          <div className="skeleton-card">
+          <Container fixed>       
+              <SearchInput
                 performSearch={this.performSearch}
                 showErrorMsg={showErrorMsg}
-              /> */}
-              <SearchTest />
+              />
+              </Container>
             </div>
             <Fragment>
               {loading ?
@@ -89,9 +111,13 @@ export default class App extends Component {
                 : showCards && <Result data={songs} queryTime={queryTime} />
               }
             </Fragment>
-          </Container>
+
+        
         </ThemeProvider>
+
         </div>
+        
+        
     )
   }
 }

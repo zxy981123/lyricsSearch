@@ -1,10 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component} from 'react'
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+
+
 import PropTypes from 'prop-types'
 import { Grid, FormControlLabel, TextField, Button , Typography, Checkbox } from '@mui/material'
 import { Autocomplete } from '@mui/material'
 import API from './API.js'
 
-//import './searchInput.scss'
+import './SearchInput.css'
 
 export default class SearchInput extends Component {
   constructor(props) {
@@ -64,78 +70,44 @@ export default class SearchInput extends Component {
     )
   }
 
-  render() {
-    const { keySearchEnabled, invalidMessage, suggestions } = this.state
-    const { showErrorMsg } = this.props
-    console.log(suggestions)
+    render(){
+        const { keySearchEnabled, invalidMessage, suggestions } = this.state
+        const { showErrorMsg } = this.props
+        console.log(suggestions)
+        return(
+          <div className='search-form'>
+            <br/>
+            <br/>
+            <Paper
+            component="form"
+            sx={{ p: '8px 4px', display: 'flex', alignItems: 'center', width: 700 }}>
+            <InputBase
+            sx={{ ml: 2, flex: 1 }}
+            placeholder={keySearchEnabled ? 'Search for keywords in a song...' : 'Search for song lyrics...'}
+            inputProps={{ 'aria-label': 'search google maps' }}
+            />
+            <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+            <SearchIcon />
+            </IconButton>
+            </Paper>
 
-    return (
-      <Grid item xs={12}>
-        <form noValidate autoComplete="off" onSubmit={this.selectSearch}>
-          <div className="search-form">
-            <div className="search-input">
-              <Autocomplete
-                id="outlined-basic"
-                getOptionLabel={option => (typeof option === 'string' ? option : option.description)}
-                options={suggestions}
-                autoComplete
-                includeInputInList
-                disableOpenOnFocus
-                debug  
-                disableListWrap
-                freeSolo
-                className="suggestions"
-                renderInput={params => {
-                  return(
-                  <TextField
-                    {...params}
-                    label={keySearchEnabled ? 'Search for keywords in a song...' : 'Search for song lyrics...'}
-                    variant="outlined"
-                    fullWidth
-                    onChange={this.onSearchChange}
-                  />
-                )}}
-                renderOption={option => {
-                  console.log(option)
-
-                  return (
-                    <div>{option}</div>
-                  );
-                }}
-              />
-            </div>
-
-            <Button
-              className="search-button"
-              variant="outlined"
-              color="button"
-              type="submit"
-            >Search for songs</Button>
 
             <FormControlLabel className="song-search"
               control={
                 <Checkbox
                   checked={keySearchEnabled}
                   onChange={this.keySearch}
-                  color="primary"
+                  style ={{
+                     color: "#FFFFFF",
+                    }}
                   inputProps={{ 'aria-label': 'primary checkbox' }}
                 />
               }
-              label="Search for keywords"
+              label={<Typography style={{ color: '#FFFFFF' }}>Search for keywords</Typography>}
             />
-          </div>
-
-          {invalidMessage.length ? <Typography variant="body1" className="error-message">{invalidMessage}</Typography> : ''}
-        </form>
-
-        {showErrorMsg &&
-          <h6 className="error-container">
-            Oops, query timeout. Please try again.
-          </h6>
-        }
-      </Grid>
-    )
-  }
+          </div>            
+        )
+    }
 }
 
 SearchInput.propTypes = {
