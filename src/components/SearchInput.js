@@ -6,8 +6,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 
 import PropTypes from 'prop-types'
-import { Grid, FormControlLabel, TextField, Button , Typography, Checkbox } from '@mui/material'
-import { Autocomplete } from '@mui/material'
+import { FormControlLabel, Typography, Checkbox } from '@mui/material'
+// import { Autocomplete } from '@mui/material'
 import API from './API.js'
 
 import './SearchInput.css'
@@ -50,21 +50,22 @@ export default class SearchInput extends Component {
     this.setState({ query: event.target.text }, this.lyricsSearch)
   }
 
-  lyricsSearch = e => {
+  selectSearch = e => {
     e && e.preventDefault()
     const { query } = this.state
+    console.log("test2")
     this.props.performSearch({query}, this.state.keySearchEnabled)
   }
 
 
-  keySearch = (e) => {
+  keySearch = e => {
     const { query } = this.state
     const keySearchEnabled = e.target.checked
   //打勾
     this.setState({ keySearchEnabled }, () => {
       if (query.length) {
+        console.log("test1")
         this.props.performSearch({query}, keySearchEnabled)
-
       }
     }
     )
@@ -74,14 +75,15 @@ export default class SearchInput extends Component {
         const { keySearchEnabled, invalidMessage, suggestions } = this.state
         const { showErrorMsg } = this.props
         console.log(suggestions)
+
         return(
           <div className='search-form'>
             <br/>
             <br/>
             <Paper
-            component="form"
+            component="form" onSubmit={this.selectSearch}
             sx={{ p: '8px 4px', display: 'flex', alignItems: 'center', width: 700 }}>
-            <InputBase
+            <InputBase onChange={this.onSearchChange}
             sx={{ ml: 2, flex: 1 }}
             placeholder={keySearchEnabled ? 'Search for keywords in a song...' : 'Search for song lyrics...'}
             inputProps={{ 'aria-label': 'search google maps' }}
@@ -105,7 +107,7 @@ export default class SearchInput extends Component {
               }
               label={<Typography style={{ color: '#FFFFFF' }}>Search for keywords</Typography>}
             />
-          </div>            
+          </div>       
         )
     }
 }

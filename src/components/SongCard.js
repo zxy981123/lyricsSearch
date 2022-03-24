@@ -10,7 +10,7 @@ const imgSrc=["thumb1.jpg","thumb2.jpeg","thumb3.jpeg","thumb4.jpeg","thumb5.jpe
 
 export default class SongCard extends React.Component {
   render() {
-    let { songName,singer,lyrics } = this.props
+    let { title,artist,lyrics } = this.props
     var r=Math.floor(Math.random() * 14)
     return (
       <div>
@@ -25,11 +25,11 @@ export default class SongCard extends React.Component {
           <Box sx={{ display: 'flex', flexDirection: 'column' }}> 
             <div className="card-content">
               <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography variant="h6">{songName}</Typography>
+                <Typography variant="h6">{title}</Typography>
                 <br/>
-                <Typography variant="body2">{singer}</Typography>
+                <Typography variant="body2">{artist}</Typography>
                 <br/>
-                <IconButton aria-label="play/pause" onClick={() => {window.location.href="https://open.spotify.com/search/"+songName}}>
+                <IconButton aria-label="play/pause" onClick={() => {window.location.href="https://open.spotify.com/search/"+title}}>
                 <PlayArrowIcon sx={{ height: 38, width: 38 }} />
                 </IconButton>
               </CardContent>
@@ -50,8 +50,11 @@ export default class SongCard extends React.Component {
 
 SongCard.propTypes = {
   song: PropTypes.shape({
-    songName: PropTypes.string.isRequired,
-    singer: PropTypes.string.isRequired,
-    lyrics: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    artist: PropTypes.string.isRequired,
+    lyrics: PropTypes.string.isRequired,
   })
 }
+
+    // lyrics: PropTypes.array.isRequired,
+    // pos: PropTypes.number.isRequired

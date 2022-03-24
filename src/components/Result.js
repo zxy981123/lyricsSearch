@@ -37,7 +37,9 @@ export default class Result extends React.Component {
       <div className="result-container">
         <Grid container spacing={6}>
           <Grid item xs={8}>
-            <Typography variant="body1" className="query-results">{`Query results: ${data.length} songs (${time} seconds)`}</Typography>
+            {data.length > 0 &&
+            <Typography variant="body1" className="query-results">{`Query results: ${data.length} songs (${time} seconds)`}</Typography>
+            }
             {data.length > perPage &&
               <Pagination
                 limit={perPage}

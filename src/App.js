@@ -1,26 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Box, IconButton, Container, Skeleton, Link, createTheme, ThemeProvider, Typography, AppBar, Toolbar, CssBaseline, Button } from '@mui/material'
-//import LyricsIcon from '@mui/icons-material/Lyrics';
-import aaa from './static/images/logo.jpg'
-//import Background from './static/images/background.jpg'
+import { Container, Skeleton, createTheme, ThemeProvider, Typography, AppBar, Toolbar, CssBaseline } from '@mui/material'
 import Result from './components/Result.js'
 import SearchInput from './components/SearchInput.js'
 import API from './components/API.js'
 import './App.css'
-
-// var sectionStyle = {
-//   width: "100%",
-//   height: "200px",
-//   //width:'1500px',
-//   backgroundImage: `url(${Background})` 
-// };
-
-// const bg = {
-//   height: '100%',
-//   //color: 'red',
-//   //background: url("../../source/1.jpg"),
-//   background: require("./static/images/background.jpg"),
-// };
 
 const theme = createTheme({
       palette: {
@@ -43,8 +26,9 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      songs: [{songName:'True Love',singer:'a1',lyrics:"Rich man, poor man, beggar or king,\n You just can't have everything.\nSo thank your stars above\nFor a song in your heart."},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'}],
-      //songs:[],
+      // songs: [{songName:'True Love',singer:'a1',lyrics:"Rich man, poor man, beggar or king,\n You just can't have everything.\nSo thank your stars above\nFor a song in your heart."},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'},{songName:'a',singer:'a1',lyrics:'a2'}],
+      songs: [{songName:'True Love',singer:'a1',lyrics:"Rich man, poor man, beggar or king,\n You just can't have everything.\nSo thank your stars above\nFor a song in your heart."}],
+      // songs:[],
       showCards: true,
       showErrorMsg: false,
       loading: false,
@@ -53,22 +37,25 @@ export default class App extends Component {
   }
 
   performSearch = (data, keySearchEnabled) => {
-          const { query } = data
-      
+          const { query } = data
+
           this.setState({ loading: true, showErrorMsg: false }, async () => {
+
             try {
-              const response = await API.post(
-                  keySearchEnabled ? '/key_search':'/lyrics_search',
-                { query } 
+              const response = await API.get(
+                  keySearchEnabled ? '/search/key/' + query + '/1':'/search/lyric/' + query + '/1'
               )
+              console.log('response: ', response)
               this.setState({
                 songs: response.data.songs,
                 queryTime: response.data.query_time,
                 showCards: true,
                 loading: false
               })
+              console.log('query: ', query)
             } catch (error) {
               console.error(error)
+              console.log('query: ', query)
               this.setState({
                 showErrorMsg: true,
                 loading: false
